@@ -9,7 +9,15 @@ export default async function getUrls(
 ) {
     const { body } = req
     const { longUrl, shortUrl, clicks } = body
-    let url = await prisma.url.create({
+    let existing_url = await prisma.url.findFirst({
+        where: {
+            shortUrl: shortUrl
+        }
+    })
+    if(!!existing_url){
+        res.status(200).json({ message: 'This short url is used. Find another one.', ok: false })
+    }
+    await prisma.url.create({
         data: {
             longUrl,
             shortUrl,
@@ -19,5 +27,5 @@ export default async function getUrls(
             }}
         }
     })
-    res.status(200).json({ message: 'Successfully posted' })
+    res.status(200).json({ message: 'Successfully posted', ok: true })
 }

@@ -18,4 +18,5 @@ export type UrlType = {
 
 export type PostUrlType = {
     message: string
+    ok: boolean
 }

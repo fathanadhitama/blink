@@ -14,9 +14,17 @@ export default async function getUrls(
         })
 
         if(!urls){
-            res.status(404).end()
+            res.status(404).redirect('/_error')
             return;
         }
+        await prisma.url.update({
+            data: {
+                clicks: urls.clicks+1
+            },
+            where: {
+                id: urls.id
+            }
+        })
         const target = urls.longUrl.startsWith('http')? urls.longUrl : `https://${urls.longUrl}`
         // Redirect ke URL tertentu
         res.redirect(target)

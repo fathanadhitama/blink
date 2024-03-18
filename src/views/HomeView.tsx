@@ -1,17 +1,16 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { UrlsType } from '../../types/url'
+import { PostUrlType, UrlsType } from '../../types/url'
 import LinkCard from '@/components/LinkCard';
-import { useRouter } from 'next/navigation';
+import LinkCardSkeleton from '@/components/LinkCardSkeleton';
 
 export default function HomeView() {
   const [urls, setUrls] = useState<UrlsType['urls']>([])
   const [longUrl, setLongUrl] = useState('')
   const [shortUrl, setShortUrl] = useState('')
+  const [toggle, setToggle] = useState(false)
   const [isLoading, setLoading] = useState(false)
-  const [isBlinking, setBlinking] = useState(false)
-  const router = useRouter()
   
   const fetchUrls = async () => {
     setLoading(true)
@@ -32,11 +31,23 @@ export default function HomeView() {
     setLoading(false)
   };
 
+  const deleteUrl = async (id: String) => {
+    setLoading(true)
+    const res: Response = await fetch(
+      `/api/delete/${id}`,
+      {
+        method: 'DELETE'
+      }
+    );
+    setLoading(false)
+    setToggle(prevState => !prevState)
+  };
+
   const postUrl = async () => {
     setLongUrl('')
     setShortUrl('')
-    setBlinking(true)
-    await fetch(
+    setLoading(true)
+    const res: Response = await fetch(
       '/api/save-url',
       {
         method: 'POST',
@@ -50,13 +61,13 @@ export default function HomeView() {
         },
       }
     );
-    setBlinking(false)
-    router.refresh()
+    setLoading(false)
+    setToggle(prevState => !prevState)
   };
 
   useEffect(() => {
     fetchUrls()
-  }, [])
+  }, [toggle])
 
   return (
     <main className="flex flex-col justify-center items-center md:flex-row min-h-screen bg-[#060627]">
@@ -67,21 +78,23 @@ export default function HomeView() {
           </h3>
           <form className='p-5 flex justify-center gap-5 flex-col'>
             <div className='flex flex-col'>
-              <label htmlFor="longUrl">Enter your long url</label>
               <input type="text" name="longUrl" id="longUrl"
-              className='text-white bg-transparent rounded-md border border-blue-500 p-2'
-              onChange={e => setLongUrl(e.target.value)} value={longUrl}/>
+              className='text-white bg-transparent rounded-md border border-blue-500 p-2
+              placeholder:text-slate-800 focus:placeholder:text-slate-500 hover:placeholder:text-slate-500'
+              onChange={e => setLongUrl(e.target.value)} value={longUrl}
+              placeholder='Enter your long, boring url...'/>
             </div>
             <div className='flex flex-col'>
-              <label htmlFor="shortUrl">Customize your short url</label>
               <div>
                 <code>bl.ink/ </code>
                 <input type="text" name="shortUrl" id="shortUrl" 
-                className='text-white bg-transparent rounded-md border border-blue-500 p-2'
-                onChange={e => setShortUrl(e.target.value)} value={shortUrl}/>
+                className='text-white bg-transparent rounded-md border border-blue-500 p-2
+                placeholder:text-slate-800 focus:placeholder:text-slate-500 hover:placeholder:text-slate-500'
+                onChange={e => setShortUrl(e.target.value)} value={shortUrl}
+                placeholder='Enter your badass url'/>
               </div>
             </div>
-            <input type="submit" value={isBlinking ? "Blinking..." : "Blink it!"} disabled={isBlinking}
+            <input type="submit" value={isLoading ? "Blinking..." : "Blink it!"} disabled={isLoading}
             className='hover:cursor-pointer hover:bg-fuchsia-400 hover:-translate-y-1 duration-300 p-2 bg-indigo-500 shadow-lg shadow-indigo-500/50 rounded-md'
             onClick={
               (e) => {
@@ -93,9 +106,17 @@ export default function HomeView() {
       </section>
       <section className='w-4/5 md:w-2/6 bg-gradient-to-tr from-[#4158D0] via-[#C850C0] to-[#FFCC70]
        rounded-l-3xl pl-1'>
-        <div className='bg-[#171746] rounded-l-3xl px-10 min-h-full max-h-[100vh] overflow-auto relative'>
+        <div className='bg-[#171746] rounded-l-3xl px-10 min-h-screen max-h-[100vh] overflow-auto relative'>
           <h1 className="text-3xl font-bold py-5 sticky top-0 bg-[#171746]/75">Shortened Links</h1>
           {
+            urls.length == 0 || isLoading? 
+            (
+              <div className='flex flex-col gap-5'>
+                <LinkCardSkeleton/>
+                <LinkCardSkeleton/>
+                <LinkCardSkeleton/>
+              </div>
+            ) :
             urls.map((link, index) => (
               <LinkCard
               key={index}
@@ -104,6 +125,7 @@ export default function HomeView() {
               shortUrl={link.shortUrl}
               longUrl={link.longUrl}
               clicks={link.clicks}
+              deleteUrl={deleteUrl}
               />
             ))
           }
