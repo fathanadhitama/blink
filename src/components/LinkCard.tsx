@@ -15,8 +15,8 @@ function LinkCard(props: UrlType & { deleteUrl: (id: string) => void }){
     };
 
     return (
-        <div className="bg-[#303076]/[.3] p-5 rounded-lg mt-3 min-w-4/5 text-wrap">
-            <div className="flex justify-between mb-3">
+        <div className="bg-[#303076]/[.3] p-5 rounded-lg mt-3 break-words">
+            <div className="flex justify-between flex-wrap mb-3">
                 <h3 className="text-xl font-semibold text-fuchsia-300"><code>b.link</code>/{shortUrl}</h3>
                 <button className="p-1 text-sm bg-red-700 hover:bg-red-500 rounded-md"
                 onClick={handleDelete}>
