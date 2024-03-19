@@ -5,3 +5,7 @@ export default function Home() {
     <HomeView />
   );
 }
+
+export const metadata = {
+  title: "Blink"
+}
