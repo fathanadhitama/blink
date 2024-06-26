@@ -1,11 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import prisma from '../../lib/prisma'
-import { PostUrlType } from '../../types/url'
+import { ResponseUrlType } from '../../types/url'
 
  
 export default async function getUrls(
   req: NextApiRequest,
-  res: NextApiResponse<PostUrlType>
+  res: NextApiResponse<ResponseUrlType>
 ) {
     const { body } = req
     const { longUrl, shortUrl, clicks } = body
@@ -15,7 +15,8 @@ export default async function getUrls(
         }
     })
     if(!!existing_url){
-        res.status(200).json({ message: 'This short url is used. Find another one.', ok: false })
+        res.status(500).json({ message: 'This short url is used. Find another one.', ok: false })
+        return
     }
     await prisma.url.create({
         data: {

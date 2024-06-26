@@ -16,15 +16,13 @@ function LinkCard(props: UrlType & { deleteUrl: (id: string) => void }){
 
     return (
         <div className="bg-[#303076]/[.3] p-5 rounded-lg mt-3 break-words">
-            <div className="flex justify-between flex-wrap mb-3">
-                <h3 className="text-xl font-semibold text-fuchsia-300"><code>b.link</code>/{shortUrl}</h3>
+                <p className="text-sm md:text-md font-semibold text-wrap text-fuchsia-300">blink-peach.vercel.app/{shortUrl}</p>
                 <button className="p-1 text-sm bg-red-700 hover:bg-red-500 rounded-md"
                 onClick={handleDelete}>
                     Delete
                 </button>
-            </div>
-            <p>{longUrl}</p>
-            <p>Clicks count: {clicks}</p>
+            <p className="p-1 text-sm">{longUrl}</p>
+            <p className="p-1 text-sm">Clicks count: {clicks}</p>
         </div>
     )
 }

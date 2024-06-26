@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { PostUrlType, UrlsType } from '../../types/url'
+import { ResponseUrlType, UrlsType } from '../../types/url'
 import LinkCard from '@/components/LinkCard';
 import LinkCardSkeleton from '@/components/LinkCardSkeleton';
 
@@ -11,6 +11,9 @@ export default function HomeView() {
   const [shortUrl, setShortUrl] = useState('')
   const [toggle, setToggle] = useState(false)
   const [isLoading, setLoading] = useState(false)
+  const [longUrlError, setLongUrlError] = useState('')
+  const [shortUrlError, setShortUrlError] = useState('')
+  const [isUrlValid, setIsUrlValid] = useState(false);
   
   const fetchUrls = async () => {
     setLoading(true)
@@ -23,12 +26,23 @@ export default function HomeView() {
   
     if (res.ok) {
       const data: UrlsType = await res.json();
-      // Gunakan data sesuai kebutuhan
       setUrls(data['urls'])
     } else {
       console.error('Gagal mengambil data:', res.statusText);
     }
     setLoading(false)
+  };
+
+  const handleUrlChange = (text: string) => {
+    setLongUrl(text);
+    const urlRegexPattern =
+      /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi
+    let regex = new RegExp(urlRegexPattern);
+    if (text.match(regex) && text.split(" ").length === 1) {
+      setIsUrlValid(true);
+      return;
+    }
+    setIsUrlValid(false);
   };
 
   const deleteUrl = async (id: String) => {
@@ -61,61 +75,68 @@ export default function HomeView() {
         },
       }
     );
+    const data: ResponseUrlType = await res.json()
+    console.log(data)
+
+    if (!res.ok) {
+      setShortUrlError(data.message)
+    }
     setLoading(false)
     setToggle(prevState => !prevState)
   };
+
+  const handleSubmit = (e : React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    postUrl()
+  }
 
   useEffect(() => {
     fetchUrls()
   }, [toggle])
 
   return (
-    <main className="flex flex-col justify-center items-center md:flex-row min-h-screen bg-[#060627]">
-      <section className='w-11/12 md:w-4/6 py-3 md:p-10 min-h-full flex flex-col justify-center items-center'>
+    <main className="flex flex-col justify-center items-center lg:flex-row min-h-screen bg-[#060627] lg:px-10 ">
+      <section className='w-11/12 lg:w-4/6 py-3 min-h-full flex flex-col justify-center items-center'>
         <div className='bg-gradient-to-tr from-[#4158D0] via-[#C850C0] to-[#FFCC70]
-       rounded-3xl p-0.5 w-full md:w-10/12'>
-          <div className='bg-[#171746] rounded-3xl p-10'>
-            <h3 className='text-3xl lg:text-[50px] font-bold leading-normal'>
+       rounded-3xl p-0.5 w-full lg:w-10/12'>
+          <div className='bg-[#171746] rounded-3xl p-7 lg:p-10'>
+            <h3 className='text-xl lg:text-[50px] text-center mb-4 font-bold leading-normal'>
               Go to your link in a
               <span className='text-transparent bg-clip-text bg-gradient-to-tr 
-              from-[#4158D0] via-[#C850C0] to-[#FFCC70]'> blink</span> of an eye!
+              from-[#4158D0] via-[#C850C0] to-[#FFCC70]'> bleenk</span> of an eye!
             </h3>
-            <form className='p-5 flex justify-center gap-5 flex-col'>
+            <form className='md:p-5 flex justify-center gap-5 flex-col' onSubmit={handleSubmit}>
               <div className='flex flex-col'>
-                <input type="text" name="longUrl" id="longUrl"
-                className='text-white bg-transparent rounded-md border-2 border-blue-800 p-2
+                <input required type="url" name="longUrl" id="longUrl"
+                className='text-white text-sm bg-white/10 rounded-md border-2 border-blue-800 p-2
                 placeholder:text-slate-400 focus:placeholder:text-slate-500 hover:placeholder:text-slate-500'
-                onChange={e => setLongUrl(e.target.value)} value={longUrl}
-                placeholder='Enter your long, boring url...'/>
+                onChange={(e) => handleUrlChange(e.target.value)} value={longUrl}
+                placeholder='Your long, boring url...'/>
+                {!isUrlValid && longUrl!='' && <span className='text-red-300 text-xs'>URL is not valid</span>}
               </div>
-              <div className='flex flex-col'>
-                <div>
-                  <code>b.link/ </code>
-                  <input type="text" name="shortUrl" id="shortUrl" 
-                  className='text-white bg-transparent rounded-md border-2 border-blue-800 p-2 w-5/6
-                  placeholder:text-slate-400 focus:placeholder:text-slate-500 hover:placeholder:text-slate-500'
-                  onChange={e => setShortUrl(e.target.value)} value={shortUrl}
-                  placeholder='Enter your badass url'/>
-                </div>
+              <div className='flex flex-col lg:flex-row items-center gap-2'>
+                <p className='text-md'>bleenk.vercel.app/</p>
+                <input required type="text" name="shortUrl" id="shortUrl"
+                className='text-white text-sm bg-white/10 rounded-md border-2 border-blue-800 p-2 w-full
+                placeholder:text-slate-400 focus:placeholder:text-slate-500 hover:placeholder:text-slate-500'
+                onChange={e => setShortUrl(e.target.value)} value={shortUrl}
+                placeholder='Your badass url...'/>
               </div>
-              <input type="submit" value={isLoading ? "Blinking..." : "Blink it!"} disabled={isLoading}
-              className='hover:cursor-pointer hover:bg-fuchsia-400 hover:-translate-y-1 duration-300 p-2 bg-indigo-500 shadow-lg shadow-indigo-500/50 rounded-md'
-              onClick={
-                (e) => {
-                  e.preventDefault()
-                  postUrl()
-                }}/>
+                {shortUrlError && <span className='text-red-300 text-xs'>{shortUrlError}</span>}
+              <input type="submit" value={isLoading ? "Blinking..." : "Blink it!"} disabled={isLoading || !isUrlValid}
+              className='hover:cursor-pointer hover:bg-fuchsia-400 hover:-translate-y-1 duration-300 p-2 bg-indigo-500 shadow-lg shadow-indigo-500/50 rounded-md'/>
             </form>
           </div>
         </div>
       </section>
-      <section className='w-11/12 md:w-2/6 md:p-10 h-screen '>
+
+      <section className='w-11/12 lg:w-2/6 h-screen'>
         <div className='bg-gradient-to-tr from-[#4158D0] via-[#C850C0] to-[#FFCC70]
        rounded-3xl p-0.5'>
-          <div className='bg-[#171746] rounded-3xl px-10 max-h-[80vh] overflow-auto relative'>
-            <h1 className="text-3xl font-bold py-5 w-full sticky top-0 bg-[#171746]">Shortened Links</h1>
+          <div className='bg-[#171746] rounded-3xl p-7 max-h-[80vh] overflow-auto relative'>
+            <h1 className="text-xl font-bold mb-5 w-full sticky top-0 bg-[#171746]">Shortened Links</h1>
             {
-              urls.length == 0 || isLoading? 
+              isLoading ? 
               (
                 <div className='flex flex-col gap-5'>
                   <LinkCardSkeleton/>

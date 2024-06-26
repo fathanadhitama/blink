@@ -1,11 +1,5 @@
 export type UrlsType = {
-    urls: { 
-      id: string; 
-      longUrl: string; 
-      shortUrl: string; 
-      clicks: number; 
-      authorId: string | null; 
-    }[]
+    urls: UrlType[]
 }
 
 export type UrlType = {
@@ -16,7 +10,7 @@ export type UrlType = {
   authorId: string | null;
 }
 
-export type PostUrlType = {
+export type ResponseUrlType = {
     message: string
     ok: boolean
 }
