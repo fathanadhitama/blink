@@ -97,7 +97,7 @@ export default function HomeView() {
   }, [toggle])
 
   return (
-    <main className="flex flex-col justify-center items-center min-h-screen bg-[#060627] lg:px-10 m-5">
+    <main className="flex flex-col justify-center items-center min-h-screen bg-[#060627] lg:px-10">
       <section className='w-11/12 lg:w-4/6 py-3 min-h-full flex flex-col justify-center items-center'>
         <div className='bg-gradient-to-tr from-[#4158D0] via-[#C850C0] to-[#FFCC70]
        rounded-3xl p-0.5 w-full lg:w-10/12'>
