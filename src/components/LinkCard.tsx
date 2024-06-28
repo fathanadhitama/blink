@@ -1,3 +1,4 @@
+import { Trash2 } from "lucide-react";
 import { UrlType } from "../../types/url";
 
 function LinkCard(props: UrlType & { deleteUrl: (id: string) => void }){
@@ -15,14 +16,19 @@ function LinkCard(props: UrlType & { deleteUrl: (id: string) => void }){
     };
 
     return (
-        <div className="bg-[#303076]/[.3] p-5 rounded-lg mt-3 break-words">
-                <p className="text-sm md:text-md font-semibold text-wrap text-fuchsia-300">blink-peach.vercel.app/{shortUrl}</p>
+        <div className="bg-white/[.3] p-5 rounded-lg mt-3 break-words">
+            <div className="flex justify-between gap-3 items-center mb-3">
+                <a 
+                href={longUrl} className="text-md md:text-lg font-semibold text-wrap text-gray-800 ">
+                    blink-peach.vercel.app/{shortUrl}
+                </a>
                 <button className="p-1 text-sm bg-red-700 hover:bg-red-500 rounded-md"
                 onClick={handleDelete}>
-                    Delete
+                    <Trash2 size={16}/>
                 </button>
-            <p className="p-1 text-sm">{longUrl}</p>
-            <p className="p-1 text-sm">Clicks count: {clicks}</p>
+            </div>
+            <a className="text-sm text-gray-500 font-semibold">🔗 {longUrl}</a>
+            <p className="text-sm text-gray-500 font-semibold">🌐 Clicks: {clicks}</p>
         </div>
     )
 }

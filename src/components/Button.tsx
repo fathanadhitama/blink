@@ -9,8 +9,8 @@ const Button: React.FC<ButtonProps> = ({
   return (
     <button disabled={disabled} className={
         disabled ?
-        'cursor-not-allowed bg-slate-600 text-white p-2 bg-indigo-500 shadow-lg rounded-md'
-        :'hover:cursor-pointer hover:bg-fuchsia-400 hover:-translate-y-1 duration-300 p-2 bg-indigo-500 shadow-lg shadow-indigo-500/50 rounded-md'}
+        'cursor-not-allowed w-full bg-zinc-700 text-slate-500 p-2 shadow-lg rounded-md'
+        :'hover:cursor-pointer w-full text-black hover:-translate-y-1 duration-300 font-bold p-2 bg-[#FAD810] rounded-md'}
         {...props}
     >
         {isLoading ? 'Blinking...' : 'Blink it!'}
