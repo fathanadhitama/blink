@@ -16,10 +16,10 @@ function LinkCard(props: UrlType & { deleteUrl: (id: string) => void }){
     };
 
     return (
-        <div className="bg-white/[.3] p-5 rounded-lg mt-3 break-words">
+        <div className="bg-white/[.3] p-5 rounded-lg mt-3 mb-2 break-words shadow-sm shadow-[#111114]">
             <div className="flex justify-between gap-3 items-center mb-3">
                 <a 
-                href={longUrl} className="text-md md:text-lg font-semibold text-wrap text-gray-800 ">
+                href={longUrl} target="_blank" className="text-md md:text-lg font-semibold text-wrap text-gray-800 ">
                     blink-peach.vercel.app/{shortUrl}
                 </a>
                 <button className="p-1 text-sm bg-red-700 hover:bg-red-500 rounded-md"

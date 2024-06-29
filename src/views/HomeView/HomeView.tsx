@@ -49,7 +49,7 @@ export default function HomeView() {
   }, [toggle])
 
   return (
-    <main className="flex flex-col justify-center items-center min-h-screen bg-[#141414] lg:px-10 gap-10">
+    <main className="flex flex-col items-center min-h-screen bg-[#141414] lg:px-10 gap-10">
       <div className='px-10 py-5 flex items-center justify-between w-full'>
         <a className='text-3xl lg:text-[50px] font-bold'>blink.<span className='text-[#FAD810]'>it</span></a>
         {isOpen ? 
@@ -57,11 +57,11 @@ export default function HomeView() {
           : <AlignJustify className='hover:cursor-pointer' onClick={() => setIsOpen(!isOpen)} />
         }
       </div>
-      <div className='w-full flex justify-center items-center'>
+      <div className='w-full flex justify-center items-center relative'>
         <Form setToggle={setToggle}/>
         {isOpen && (
-          <section className='absolute top-20 right-0 w-full lg:w-1/3 bg-[#FAD810] lg:rounded-l-3xl pb-5'>
-            <div className='px-3 lg:px-7 max-h-[80vh] lg:max-h-[85vh] overflow-auto relative'>
+          <section className='absolute top-[-30px] overflow-hidden right-0 w-full lg:w-2/5 bg-[#FAD810] lg:rounded-l-3xl pb-5'>
+            <div className='px-3 lg:px-7 max-h-[80vh] lg:max-h-[70vh] overflow-auto relative'>
               <h1 className="text-xl text-center text-black font-bold mb-5 w-full sticky top-0 py-3 bg-[#FAD810]">Shortened Links</h1>
               {
                 isLoading ? 
@@ -84,6 +84,9 @@ export default function HomeView() {
                   />
                 ))
               }
+              {/* <LinkCardSkeleton />
+              <LinkCardSkeleton />
+              <LinkCardSkeleton /> */}
             </div>
           </section>)}
       </div>
