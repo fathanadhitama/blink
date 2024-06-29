@@ -30,6 +30,6 @@ export default async function getUrls(
         res.redirect(urls.longUrl)
     } catch (error) {
         console.error('Terjadi kesalahan:', error);
-        res.status(500).json({ success: false, message: 'Terjadi kesalahan server' });
+        res.status(500).json({ ok: false, message: 'Terjadi kesalahan server' });
     }
 }

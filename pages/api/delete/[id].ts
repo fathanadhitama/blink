@@ -12,9 +12,9 @@ export default async function deleteUrl(
                 id: id as string
             }
         })
-        res.status(200).json({ success: true, message: `Url with ID ${id} has been deleted` });
+        res.status(200).json({ ok: true, message: `Url with ID ${id} has been deleted` });
     } catch (error) {
         console.error('Terjadi kesalahan:', error);
-        res.status(500).json({ success: false, message: 'Terjadi kesalahan server' });
+        res.status(500).json({ ok: false, message: 'Terjadi kesalahan server' });
     }
 }

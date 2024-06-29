@@ -8,6 +8,7 @@ import Form from './elements/Form';
 import Footer from './elements/Footer';
 import { AlignJustify, X } from 'lucide-react'
 import { useTransition, animated } from 'react-spring'
+import { toast } from '@/components/Toast';
 
 export default function HomeView() {
   const [urls, setUrls] = useState<UrlsType['urls']>([])
@@ -47,6 +48,13 @@ export default function HomeView() {
         method: 'DELETE'
       }
     );
+    const data: ResponseUrlType = await res.json()
+    if (res.ok) {
+      toast.success('Link successfully deleted.')
+    } else {
+      toast.error(data.message)
+    }
+    setLoading(false)
     setLoading(false)
     setToggle(prevState => !prevState)
   };
@@ -57,7 +65,7 @@ export default function HomeView() {
 
   return (
     <main className="flex overflow-hidden flex-col items-center min-h-screen bg-[#141414] lg:px-10 gap-10">
-      <div className='px-10 py-5 flex items-center justify-between w-full'>
+      <div className='px-10 py-5 flex items-center justify-between w-full hover:cursor-default'>
         <a className='text-3xl lg:text-[50px] font-bold'>blink.<span className='text-[#FAD810]'>it</span></a>
         {isOpen ? 
           <X className='hover:cursor-pointer' onClick={() => setIsOpen(!isOpen)} />
@@ -74,7 +82,7 @@ export default function HomeView() {
             font-bold pb-5 w-full sticky top-0 py-3 bg-[#FAD810] ">
               Shortened Links
             </h1>
-            <div className='px-3 lg:px-7 h-[85vh] overflow-auto relative'>
+            <div className='px-3 lg:px-7 h-[80vh] overflow-auto relative'>
               {
                 isLoading ? 
                 (

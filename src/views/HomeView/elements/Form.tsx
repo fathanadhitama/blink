@@ -4,8 +4,11 @@ import Image from 'next/image';
 import arrow from '@/../public/images/arrow.png'
 import { useEffect, useState } from 'react'
 import { ResponseUrlType, UrlsType } from '@/../types/url'
+import { toast } from "@/components/Toast";
 
-function Form({ setToggle } : {setToggle : React.Dispatch<React.SetStateAction<boolean>>}) {
+function Form({ setToggle } : {
+  setToggle : React.Dispatch<React.SetStateAction<boolean>>
+}) {
     const [longUrl, setLongUrl] = useState('')
     const [shortUrl, setShortUrl] = useState('')
     const [longUrlError, setLongUrlError] = useState('')
@@ -47,9 +50,11 @@ function Form({ setToggle } : {setToggle : React.Dispatch<React.SetStateAction<b
         const data: ResponseUrlType = await res.json()
     
         if (!res.ok) {
-          setShortUrlError(data.message)
+          // setShortUrlError(data.message)
+          toast.error(data.message)
         } else {
-          setShortUrl('')
+          // setShortUrl('')
+          toast.success('Your link has blinked! ⚡')
         }
         setLoading(false)
         setToggle(prevState => !prevState)
@@ -71,7 +76,7 @@ function Form({ setToggle } : {setToggle : React.Dispatch<React.SetStateAction<b
             <div className='flex flex-col w-full'>
               <input required type="url" name="longUrl" id="longUrl"
               className='text-white text-sm bg-white/10 rounded-md p-3
-              placeholder:text-slate-500 focus:placeholder:text-slate-500 hover:placeholder:text-slate-500'
+              placeholder:text-stone-500 focus:placeholder:text-yellow-400/[.5] hover:placeholder:text-yellow-400/[.5]'
               onChange={(e) => handleUrlChange(e.target.value)} value={longUrl}
               placeholder='Your long, boring url...'/>
               {!isUrlValid && longUrl!='' 
@@ -82,7 +87,7 @@ function Form({ setToggle } : {setToggle : React.Dispatch<React.SetStateAction<b
               <p className='text-md lg:w-1/3'>blink-peach.vercel.app/</p>
               <input required type="text" name="shortUrl" id="shortUrl"
               className='text-white text-sm bg-white/10 rounded-md p-3 w-full
-              placeholder:text-slate-500 focus:placeholder:text-slate-500 hover:placeholder:text-slate-500'
+              placeholder:text-stone-500 focus:placeholder:text-yellow-400/[.5] hover:placeholder:text-yellow-400/[.5]'
               onChange={e => setShortUrl(e.target.value)} value={shortUrl}
               placeholder='Your badass url...'/>
             </div>
