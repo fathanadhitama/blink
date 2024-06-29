@@ -7,12 +7,19 @@ import LinkCardSkeleton from '@/components/LinkCardSkeleton';
 import Form from './elements/Form';
 import Footer from './elements/Footer';
 import { AlignJustify, X } from 'lucide-react'
+import { useTransition, animated } from 'react-spring'
 
 export default function HomeView() {
   const [urls, setUrls] = useState<UrlsType['urls']>([])
   const [toggle, setToggle] = useState(false)
   const [isLoading, setLoading] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
+  const transition = useTransition(isOpen, {
+    from: { x: 500, y: 0},
+    enter: { x: 0, y: 0},
+    leave: { x: 800, y: 0},
+    config: { duration: 400 }
+  })
   
   const fetchUrls = async () => {
     setLoading(true)
@@ -49,7 +56,7 @@ export default function HomeView() {
   }, [toggle])
 
   return (
-    <main className="flex flex-col items-center min-h-screen bg-[#141414] lg:px-10 gap-10">
+    <main className="flex overflow-hidden flex-col items-center min-h-screen bg-[#141414] lg:px-10 gap-10">
       <div className='px-10 py-5 flex items-center justify-between w-full'>
         <a className='text-3xl lg:text-[50px] font-bold'>blink.<span className='text-[#FAD810]'>it</span></a>
         {isOpen ? 
@@ -59,10 +66,15 @@ export default function HomeView() {
       </div>
       <div className='w-full flex justify-center items-center relative'>
         <Form setToggle={setToggle}/>
-        {isOpen && (
-          <section className='absolute top-[-30px] overflow-hidden right-0 w-full lg:w-2/5 bg-[#FAD810] lg:rounded-l-3xl pb-5'>
-            <div className='px-3 lg:px-7 max-h-[80vh] lg:max-h-[70vh] overflow-auto relative'>
-              <h1 className="text-xl text-center text-black font-bold mb-5 w-full sticky top-0 py-3 bg-[#FAD810]">Shortened Links</h1>
+        {transition((style, item) => 
+          item && (
+            <animated.section style={style} 
+            className='absolute top-[-30px] lg:right-[-40px] overflow-hidden right-0 w-full lg:w-2/5 bg-[#FAD810] lg:rounded-l-3xl pb-5'>
+            <h1 className="text-xl text-center text-black shadow-lg
+            font-bold pb-5 w-full sticky top-0 py-3 bg-[#FAD810] ">
+              Shortened Links
+            </h1>
+            <div className='px-3 lg:px-7 h-[85vh] overflow-auto relative'>
               {
                 isLoading ? 
                 (
@@ -84,11 +96,10 @@ export default function HomeView() {
                   />
                 ))
               }
-              {/* <LinkCardSkeleton />
-              <LinkCardSkeleton />
-              <LinkCardSkeleton /> */}
             </div>
-          </section>)}
+          </animated.section>
+          )
+        )}
       </div>
       <Footer />
     </main>
