@@ -74,7 +74,6 @@ function SignupView() {
                 value={nameValue}
                 className='text-white text-sm bg-white/10 rounded-md p-3
               placeholder:text-stone-500 focus:placeholder:text-yellow-400/[.5] hover:placeholder:text-yellow-400/[.5]'/>
-              {formErrors.email && <p className="text-xs text-red-400">{formErrors.email}</p>}
             </div>
             <div className="flex flex-col gap-2">
                 <label className="text-xs font-semibold" htmlFor="email">Email</label>
@@ -82,7 +81,8 @@ function SignupView() {
                 onChange={(e) => setEmailValue(e.target.value)}
                 value={emailValue}
                 className='text-white text-sm bg-white/10 rounded-md p-3
-              placeholder:text-stone-500 focus:placeholder:text-yellow-400/[.5] hover:placeholder:text-yellow-400/[.5]'/>
+                placeholder:text-stone-500 focus:placeholder:text-yellow-400/[.5] hover:placeholder:text-yellow-400/[.5]'/>
+                {formErrors.email && <p className="text-xs text-red-400">{formErrors.email}</p>}
             </div>
             <div className="flex flex-col gap-2">
                 <label className="text-xs font-semibold" htmlFor="password">Password</label>

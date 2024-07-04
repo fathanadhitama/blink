@@ -60,8 +60,8 @@ export const AuthContextProvider = ({ children } : AuthContextProviderType) => {
             router.push(`/`)
         })
         .catch(function (error) {
-            console.log(error.response.data.error);
-            setError(error.response.data.error)
+            console.log(error.response.data.message);
+            setError(error.response.data.message)
         });
         setIsLoading(false)
     }
