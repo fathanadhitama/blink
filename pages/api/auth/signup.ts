@@ -34,7 +34,6 @@ export default async function signup(
                 ok: false
             });
             return;
-        
         }
     
         await prisma.user.create({

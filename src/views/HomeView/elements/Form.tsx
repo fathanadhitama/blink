@@ -3,19 +3,20 @@ import Button from '@/components/Button';
 import Image from 'next/image';
 import arrow from '@/../public/images/arrow.png'
 import { useEffect, useState } from 'react'
-import { ResponseUrlType, UrlsType } from '@/../types/url'
+import { ResponseUrlType, UrlRequestBodyType, UrlsType } from '@/../types/url'
 import { toast } from "@/components/Toast";
 import { InfinitySpin } from "react-loader-spinner";
+import { useAuthContext } from "@/components/contexts/AuthContext";
 
 function Form({ setToggle } : {
   setToggle : React.Dispatch<React.SetStateAction<boolean>>
 }) {
     const [longUrl, setLongUrl] = useState('')
     const [shortUrl, setShortUrl] = useState('')
-    const [longUrlError, setLongUrlError] = useState('')
     const [shortUrlError, setShortUrlError] = useState('')
     const [isUrlValid, setIsUrlValid] = useState(false)
     const [isLoading, setLoading] = useState(false)
+    const { userEmail } = useAuthContext()
 
     const handleUrlChange = (text: string) => {
         setLongUrl(text);
@@ -34,15 +35,23 @@ function Form({ setToggle } : {
         setShortUrl('')
         setShortUrlError('')
         setLoading(true)
+        
+        const payload: UrlRequestBodyType = {
+          longUrl,
+          shortUrl,
+          clicks: 0,
+          email: '',
+        }
+
+        if (userEmail!=''){
+          payload.email = userEmail
+        }
+
         const res: Response = await fetch(
           '/api/save-url',
           {
             method: 'POST',
-            body: JSON.stringify({
-              longUrl: longUrl,
-              shortUrl: shortUrl,
-              clicks: 0
-            }),
+            body: JSON.stringify(payload),
             headers: {
               'Content-Type': 'application/json',
             },

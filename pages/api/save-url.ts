@@ -7,8 +7,7 @@ export default async function saveUrl(
   req: NextApiRequest,
   res: NextApiResponse<ResponseUrlType>
 ) {
-    const { longUrl, shortUrl, clicks } = req.body
-    const email = req.body.userEmail
+    const { longUrl, shortUrl, clicks, email } = req.body
 
     let existing_url = await prisma.url.findFirst({
         where: {
@@ -24,6 +23,7 @@ export default async function saveUrl(
             longUrl,
             shortUrl,
             clicks,
+            authorEmail: email,
         }
     })
     res.status(200).json({ message: 'Successfully posted', ok: true })

@@ -30,7 +30,7 @@ export default function HomeView() {
   const fetchUrls = async () => {
     setLoading(true)
     const res: Response = await fetch(
-      '/api/urls',
+      `/api/user-url?email=${userEmail}`,
       {
         method: 'GET'
       }
@@ -85,7 +85,7 @@ export default function HomeView() {
         {transition((style, item) => 
           item && (
             <animated.section style={style} 
-            className='absolute top-[-30px] lg:right-[-40px] overflow-hidden right-0 w-full lg:w-2/5 bg-[#FAD810] lg:rounded-l-3xl pb-5'>
+            className='absolute top-[-30px] lg:right-[-40px] z-30 overflow-hidden right-0 w-full lg:w-2/5 bg-[#FAD810] lg:rounded-l-3xl pb-5'>
             <h1 className="text-xl text-center text-black shadow-lg
             font-bold pb-5 w-full sticky top-0 py-3 bg-[#FAD810] ">
               Shortened Links
@@ -101,17 +101,26 @@ export default function HomeView() {
                   </div>
                 ) : (
                 userEmail ? (
-                  urls.map((link, index) => (
-                    <LinkCard
-                    key={index}
-                    id={link.id}
-                    authorId={link.authorId}
-                    shortUrl={link.shortUrl}
-                    longUrl={link.longUrl}
-                    clicks={link.clicks}
-                    deleteUrl={deleteUrl}
-                    />
-                  ))
+                  urls.length == 0 ? (
+                    <div className='h-full flex gap-5 flex-col justify-center items-center'>
+                      <p 
+                      className='text-xl w-9/12 text-black font-semibold text-center'>
+                        You have no shortened link :(
+                      </p>
+                    </div>
+                  ) : (
+                    urls.map((link, index) => (
+                      <LinkCard
+                      key={index}
+                      id={link.id}
+                      authorEmail={link.authorEmail}
+                      shortUrl={link.shortUrl}
+                      longUrl={link.longUrl}
+                      clicks={link.clicks}
+                      deleteUrl={deleteUrl}
+                      />
+                    ))
+                  )
                 ) : (
                   <div className='h-full flex gap-5 flex-col justify-center items-center'>
                     <p className='text-xl w-9/12 text-black font-semibold text-center'>Sign in to track and manage your links.</p>
