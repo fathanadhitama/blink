@@ -3,12 +3,13 @@ import prisma from '../../lib/prisma'
 import { ResponseUrlType } from '../../types/url'
 
  
-export default async function getUrls(
+export default async function saveUrl(
   req: NextApiRequest,
   res: NextApiResponse<ResponseUrlType>
 ) {
-    const { body } = req
-    const { longUrl, shortUrl, clicks } = body
+    const { longUrl, shortUrl, clicks } = req.body
+    const email = req.body.userEmail
+
     let existing_url = await prisma.url.findFirst({
         where: {
             shortUrl: shortUrl
@@ -23,9 +24,6 @@ export default async function getUrls(
             longUrl,
             shortUrl,
             clicks,
-            author: {create:{
-                name: 'leibniz' // hardcode dulu sebelum auth
-            }}
         }
     })
     res.status(200).json({ message: 'Successfully posted', ok: true })

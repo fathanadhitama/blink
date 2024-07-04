@@ -3,7 +3,7 @@ import { Linkedin, Github } from "lucide-react";
 
 function Footer() {
   return (
-    <div className='flex flex-col gap-3 items-center items-center p-5 text-sm lg:text-md'>
+    <div className='absolute bottom-0 flex flex-col gap-3 items-center items-center p-5 text-sm lg:text-md'>
         <p className='font-bold'>Made with 💖 by 
           <span className='text-[#FAD810] mx-1'>fathanadhitama</span>
         </p>

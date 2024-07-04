@@ -5,6 +5,7 @@ import arrow from '@/../public/images/arrow.png'
 import { useEffect, useState } from 'react'
 import { ResponseUrlType, UrlsType } from '@/../types/url'
 import { toast } from "@/components/Toast";
+import { InfinitySpin } from "react-loader-spinner";
 
 function Form({ setToggle } : {
   setToggle : React.Dispatch<React.SetStateAction<boolean>>
@@ -92,7 +93,9 @@ function Form({ setToggle } : {
               placeholder='Your badass url...'/>
             </div>
               {!!shortUrlError && <span className='text-red-300 text-xs'>{shortUrlError}</span>}
-            <Button onClick={handleSubmit} isLoading={isLoading} disabled={!isUrlValid || shortUrl.length == 0}/>
+            <Button onClick={handleSubmit} isLoading={isLoading} disabled={!isUrlValid || shortUrl.length == 0}>
+              {isLoading ? <InfinitySpin width="50" color="#fad810" /> : 'Blink it!'}
+            </Button>
           </div>
       </section>
   );

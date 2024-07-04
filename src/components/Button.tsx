@@ -13,9 +13,7 @@ const Button: React.FC<ButtonProps> = ({
         'cursor-not-allowed w-full flex justify-center bg-zinc-700 text-stone-500 p-2 shadow-lg rounded-md'
         :'hover:cursor-pointer w-full flex justify-center text-black hover:-translate-y-1 duration-300 font-bold p-2 bg-[#FAD810] rounded-md'}
         {...props}
-    >
-        {isLoading ? <InfinitySpin width="50" color="#fad810" /> : 'Blink it!'}
-    </button>
+    />
   );
 }
 
