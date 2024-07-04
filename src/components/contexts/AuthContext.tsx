@@ -20,6 +20,7 @@ type AuthContextType = {
         password: string
     }) => void
     error: string
+    isLoading: boolean
 }
 
 type AuthContextProviderType = {
@@ -33,10 +34,12 @@ export const useAuthContext = () => useContext(AuthContext)
 export const AuthContextProvider = ({ children } : AuthContextProviderType) => {
     const [userEmail, setUserEmail] = useState<string>("")
     const [error, setError] = useState<string>("")
+    const [isLoading, setIsLoading] = useState<boolean>(false)
     const router = useRouter()
 
     const login = async (data : {email: string, password: string}) => {
-        axios.post('/api/auth/login', {
+        setIsLoading(true)
+        await axios.post('/api/auth/login', {
             email: data.email,
             password: data.password
         })
@@ -60,6 +63,7 @@ export const AuthContextProvider = ({ children } : AuthContextProviderType) => {
             console.log(error.response.data.error);
             setError(error.response.data.error)
         });
+        setIsLoading(false)
     }
     
     const logout = () => {
@@ -73,6 +77,7 @@ export const AuthContextProvider = ({ children } : AuthContextProviderType) => {
         email: string
         password: string
     }) => {
+        setIsLoading(true)
         await axios.post('/api/auth/signup', {
             email: data.email,
             name: data.name,
@@ -91,6 +96,7 @@ export const AuthContextProvider = ({ children } : AuthContextProviderType) => {
             setError(error.response.data.message)
             return
         })
+        setIsLoading(false)
     }
 
     useEffect(() => {
@@ -107,7 +113,8 @@ export const AuthContextProvider = ({ children } : AuthContextProviderType) => {
         login,
         logout,
         signup,
-        error
+        error,
+        isLoading,
     }
 
 

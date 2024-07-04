@@ -4,6 +4,7 @@ import "./globals.css";
 import { Toaster } from "@/components/Toast";
 import { ThemeContextProvider } from "@/components/contexts/ThemeContext";
 import { AuthContextProvider } from "@/components/contexts/AuthContext";
+import Footer from "@/views/HomeView/elements/Footer";
 
 const pjs = Plus_Jakarta_Sans({ subsets: ["latin"] });
 
@@ -21,7 +22,9 @@ export default function RootLayout({
     <html lang="en">
       <AuthContextProvider>
         <ThemeContextProvider>
-          <body className={pjs.className}>{children}</body>
+          <body className={pjs.className}>
+            {children}
+          </body>
           <Toaster/>
         </ThemeContextProvider>
       </AuthContextProvider>
