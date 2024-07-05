@@ -126,7 +126,7 @@ export default function HomeView() {
                     <p className='text-xl w-9/12 text-black font-semibold text-center'>Sign in to track and manage your links.</p>
                     <button 
                     onClick={() => router.push('/login')} 
-                    className='bg-[#141414] p-3 rounded-md hover:bg-[#141410] text-white font-semibold'>
+                    className='bg-[#141414] p-3 rounded-md hover:bg-stone-700 text-white font-semibold'>
                       Sign in now
                     </button>
                   </div>
