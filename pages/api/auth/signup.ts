@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import prisma from '@/../lib/prisma'
 import { ResponseUrlType } from '@/../types/url'
+import bcrypt from 'bcrypt'
 
 interface SignupRequestBody {
     name: string;
@@ -35,12 +36,14 @@ export default async function signup(
             });
             return;
         }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
     
         await prisma.user.create({
             data: {
                 email,
                 name,
-                password
+                password: hashedPassword
             }
         })
         

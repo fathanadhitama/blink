@@ -16,7 +16,7 @@ model Url {
   shortUrl  String
   clicks    Int
   author    User?   @relation(fields: [authorEmail], references: [email])
-  authorEmail  String
+  authorEmail  String?
 }
 
 model User {

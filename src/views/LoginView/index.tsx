@@ -31,7 +31,7 @@ function LoginView() {
   return (
     <main className="flex overflow-hidden flex-col items-center pt-8 min-h-screen bg-[#141414] lg:px-10 gap-5">
       <h1 className='text-3xl lg:text-[50px] font-bold'>blink.<span className='text-[#FAD810]'>it</span></h1>
-      <section className="w-full my-20 lg:w-1/3 bg-[#1F1F1F] rounded-3xl p-7 lg:p-10 lg:py-7 min-h-full flex flex-col justify-center items-center">
+      <section className="w-full my-16 lg:w-1/3 bg-[#1F1F1F] rounded-3xl p-7 lg:p-10 lg:py-7 min-h-full flex flex-col justify-center items-center">
       <h2 className="font-semibold text-xl mb-3">Sign in</h2>
         <div className="flex flex-col gap-5 w-full mb-3">
             <div className="flex flex-col gap-1">
@@ -55,6 +55,12 @@ function LoginView() {
             </Button>
         </div>
         <p className="text-xs">Are you new here? <span className="text-yellow-300 font-bold hover:cursor-pointer" onClick={() => router.push('/signup')}>Sign up!</span></p>
+        <div className="w-full flex items-center justify-between my-2">
+          <div className="w-2/5 h-[1px] bg-slate-600"></div>
+          <p className="text-xs">or</p>
+          <div className="w-2/5 h-[1px] bg-slate-600"></div>
+        </div>
+        <p className="text-xs"><span className="text-yellow-300 font-bold hover:cursor-pointer" onClick={() => router.push('/')}>Start</span> without signing in.</p>
       </section>
       <Footer />
     </main>

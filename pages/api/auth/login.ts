@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import prisma from '@/../lib/prisma'
 import { ResponseLoginType } from '@/../types/auth'
 import jwt from 'jsonwebtoken'
+import bcrypt from 'bcrypt'
 
 export default async function login(
     req: NextApiRequest,
@@ -22,7 +23,9 @@ export default async function login(
             })
             return
         }
-        if (existingUser.password != password){
+
+        const isPasswordValid = await bcrypt.compare(password, existingUser.password);
+        if (!isPasswordValid){
             res.status(300).json({ 
                 message: 'Password yang anda masukkan salah.',
                 ok: false,

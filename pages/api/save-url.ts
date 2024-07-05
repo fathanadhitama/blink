@@ -18,12 +18,15 @@ export default async function saveUrl(
         res.status(500).json({ message: 'This short url is used. Find another one.', ok: false })
         return
     }
+
+    const authorEmail = email!=='' ? email : null
+
     await prisma.url.create({
         data: {
             longUrl,
             shortUrl,
             clicks,
-            authorEmail: email,
+            authorEmail: authorEmail,
         }
     })
     res.status(200).json({ message: 'Successfully posted', ok: true })
