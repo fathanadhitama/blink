@@ -15,16 +15,16 @@ model Url {
   longUrl   String
   shortUrl  String
   clicks    Int
-  author    User?   @relation(fields: [authorId], references: [id])
-  authorId  String?
+  author    User?   @relation(fields: [authorEmail], references: [email])
+  authorEmail  String?
 }
 
 model User {
-  id            String       @default(cuid()) @id
-  name          String?
-  email         String?   @unique
+  name          String
+  password      String    
+  email         String   @unique @id
   createdAt     DateTime  @default(now()) @map(name: "created_at")
   updatedAt     DateTime  @updatedAt @map(name: "updated_at")
-  urls         Url[]
+  urls          Url[]
   @@map(name: "users")
 }

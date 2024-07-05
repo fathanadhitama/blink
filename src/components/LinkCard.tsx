@@ -7,8 +7,8 @@ function LinkCard(props: UrlType & { deleteUrl: (id: string) => void }){
         id,
         longUrl,
         shortUrl,
-        clicks, 
-        authorId,
+        clicks,
+        authorEmail,
         deleteUrl
     } = props
 
