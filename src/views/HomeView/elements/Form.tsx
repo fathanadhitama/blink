@@ -94,7 +94,7 @@ function Form({ setToggle } : {
             </div>
             <Image src={arrow} width={10} height={10} alt='arrow' className='h-10 flex justify-center'/>
             <div className='flex flex-col lg:flex-row items-center gap-2 w-full'>
-              <p className='text-md lg:w-1/3'>blink-peach.vercel.app/</p>
+              <p className='text-md lg:w-1/3'>blinkitt.vercel.app/</p>
               <input required type="text" name="shortUrl" id="shortUrl"
               className='text-white text-sm bg-white/10 rounded-md p-3 w-full
               placeholder:text-stone-500 focus:placeholder:text-yellow-400/[.5] hover:placeholder:text-yellow-400/[.5]'
